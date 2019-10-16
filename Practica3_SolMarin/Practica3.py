@@ -1,3 +1,5 @@
+"""Practica per tractar errors amb try except"""
+
 class EquacioPrimerGrau:
     def __init__(self, eq):
         self.eq = eq

@@ -1,6 +1,7 @@
 import unittest
 from Practica3 import EquacioPrimerGrau
 
+"""Tester per tractar errors """
 
 class TestEquacio(unittest.TestCase):
 
