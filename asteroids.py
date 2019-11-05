@@ -1,8 +1,7 @@
 #!/usr/bin/env python
-
 import math
-
 import pygame
+import random
 from pygame.locals import *
 
 
@@ -29,8 +28,8 @@ class World(object):
         # setup our event handlers
         self.event_handlers = {
             VIDEORESIZE: self.handle_resize,
-            KEYDOWN: self.handle_keydown,
-            KEYUP: self.handle_keyup
+         #   KEYDOWN: self.handle_keydown,
+         #   KEYUP: self.handle_keyup
         }
 
     def update(self):
@@ -174,6 +173,11 @@ class Player(Entity):
         self.rect = self.image.get_rect()
         self.rect.center = current
 
+class Asteroid(Entity):
+    """ represents the asteroid """
+    def __init__(self, position):
+        self.orig_image = pygame.image.load('assets/asteroid.png')
+        super(Asteroid, self).__init__(self.orig_image, position)
 
 def main():
     """ runs our application """
@@ -189,11 +193,13 @@ def main():
     world = World((800, 600), player)
     world.pew = pygame.mixer.Sound('assets/pew.wav')
 
+
     # use the clock to throttle the fps to something reasonable
     clock = pygame.time.Clock()
 
     # main loop
     running = True
+    i = 20
     while running:
         events = pygame.event.get()
 
@@ -209,6 +215,13 @@ def main():
         world.render()
         pygame.display.flip()
         clock.tick(40)
+        
+        if i%20 == 0:
+            asteroid = Asteroid(((random.randint(0,800)),(random.randint(0,600))))
+            world.sprites.add(asteroid)
+            i=20
+
+        i -= 1
 
 
 if __name__ == "__main__":
