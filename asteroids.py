@@ -201,7 +201,7 @@ def main():
 
     # main loop
     running = True
-    i = 20
+    i = 40
     j = 0
     while running:
         events = pygame.event.get()
@@ -222,7 +222,7 @@ def main():
         if i%40 == 0 and j < 30:
             asteroid = Asteroid(((random.randint(0,800)),(random.randint(0,600))))
             world.sprites.add(asteroid)
-            i=20
+            i=40
             j+=1
 
         i -= 1
