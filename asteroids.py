@@ -180,6 +180,13 @@ class Asteroid(Entity):
         super(Asteroid, self).__init__(self.orig_image, position)
         self.motion = Vector(random.randint(-3,3),random.randint(-3,3))
 
+class Bullet(Entity):
+    """ represents the bullet """
+    def __init__(self,position,direction,magnitude):
+        self.orig_image = pygame.image.load('assets/bullet.png')
+        super(Bullet, self).__init__(self.orig_image, position,direction,magnitude)
+
+
 
 def main():
     """ runs our application """
