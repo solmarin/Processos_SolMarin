@@ -178,6 +178,8 @@ class Asteroid(Entity):
     def __init__(self, position):
         self.orig_image = pygame.image.load('assets/asteroid.png')
         super(Asteroid, self).__init__(self.orig_image, position)
+        self.motion = Vector(random.randint(-5,5),random.randint(-5,5))
+
 
 def main():
     """ runs our application """
@@ -215,8 +217,8 @@ def main():
         world.render()
         pygame.display.flip()
         clock.tick(40)
-        
-        if i%20 == 0:
+
+        if i%40 == 0:
             asteroid = Asteroid(((random.randint(0,800)),(random.randint(0,600))))
             world.sprites.add(asteroid)
             i=20
