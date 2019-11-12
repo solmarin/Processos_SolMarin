@@ -143,6 +143,7 @@ class Player(Entity):
     def __init__(self, position):
         self.orig_image = pygame.image.load('assets/ship.png')
         super(Player, self).__init__(self.orig_image, position)
+        self.position = position
         self.facing = Vector.from_degrees(90)
         self.forward = False
         self.backward = False
@@ -177,14 +178,30 @@ class Asteroid(Entity):
     """ represents the asteroid """
     def __init__(self, position):
         self.orig_image = pygame.image.load('assets/asteroid.png')
+        self.duration = 1000
         super(Asteroid, self).__init__(self.orig_image, position)
         self.motion = Vector(random.randint(-3,3),random.randint(-3,3))
 
+    def update(self):
+        if self.duration == 0:
+            self.kill()
+
+        self.duration-=5
+
 class Bullet(Entity):
-    """ represents the bullet """
+    """represents the bullet"""
     def __init__(self,position,direction,magnitude):
         self.orig_image = pygame.image.load('assets/bullet.png')
-        super(Bullet, self).__init__(self.orig_image, position,direction,magnitude)
+        self.duration = 1000
+        super(Bullet, self).__init__(self.orig_image, position)
+        self.position = position
+        self.motion = Vector.from_degrees(direction, magnitude)
+
+    def update(self):
+        if self.duration == 0:
+            self.kill()
+
+        self.duration-=5
 
 
 
@@ -201,6 +218,7 @@ def main():
     player = Player((400, 300))
     world = World((800, 600), player)
     world.pew = pygame.mixer.Sound('assets/pew.wav')
+    bullet = Bullet((world.player.position),20.0,20)
 
 
     # use the clock to throttle the fps to something reasonable
@@ -225,8 +243,8 @@ def main():
         world.render()
         pygame.display.flip()
         clock.tick(40)
-
-        if i%40 == 0 and j < 30:
+        world.sprites.add(bullet)
+        if i%40 == 0 and j < 29:
             asteroid = Asteroid(((random.randint(0,800)),(random.randint(0,600))))
             world.sprites.add(asteroid)
             i=40
