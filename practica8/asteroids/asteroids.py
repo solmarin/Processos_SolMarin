@@ -205,16 +205,11 @@ class Bullet(Entity):
         self.duration-=5
 
 def update_d():
-
     while world.running:
-        i = 40
-        j = 0
-        if i%40 == 0 and j < 29:
+        if len(world.sprites) < 29:
             asteroid = Asteroid(((random.randint(0,800)),(random.randint(0,600))))
             world.sprites.add(asteroid)
-            i=40
-            j+=1
-        i -= 1
+
         world.update()
         clock.tick(20)
 
@@ -229,10 +224,10 @@ def main():
     pygame.font.init()
     pygame.mixer.init()
     pygame.display.set_caption("Asteroids 0.2")
-    # store our game state
+
     world.pew = pygame.mixer.Sound('assets/pew.wav')
     #bullet = Bullet((world.player.position),20.0,20)
-    # use the clock to throttle the fps to something reasonable
+
     hilo = threading.Thread(target=update_d)
     hilo.start()
     while world.running:
@@ -242,7 +237,6 @@ def main():
             if event.type == QUIT:
                 world.running = False
                 break
-
             world.handle_event(event)
 
         world.render()
