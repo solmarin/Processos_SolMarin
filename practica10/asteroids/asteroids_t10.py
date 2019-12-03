@@ -74,24 +74,29 @@ class World(object):
     def handle_keydown(self,event):
         if event.key == pygame.K_RIGHT:
             self.player.turn_right = True
-        if event.key == pygame.K_LEFT:
+        elif event.key == pygame.K_LEFT:
             self.player.turn_left = True
-        if event.key == pygame.K_UP:
+        elif event.key == pygame.K_UP:
             self.player.forward = True
+        elif event.key == pygame.K_DOWN:
+            self.player.backward = True
 
     def handle_keyup(self,event):
         if event.key == pygame.K_RIGHT:
             self.player.turn_right = False
-        if event.key == pygame.K_LEFT:
+        elif event.key == pygame.K_LEFT:
             self.player.turn_left = False
-        if event.key == pygame.K_UP:
+        elif event.key == pygame.K_UP:
             self.player.forward = False
-        if event.key == pygame.K_SPACE:
+        elif event.key == pygame.K_SPACE:
             direction = self.player.facing.to_degrees()[0]
             magnitude = self.player.motion.magnitude()-10
             bullet = Bullet((Vector(*self.player.rect.center)-self.player.facing*2).to_position(),direction,magnitude)
             self.sprites.add(bullet)
             self.pew = pygame.mixer.Sound('assets/pew.wav')
+        elif event.key == pygame.K_DOWN:
+            self.player.backward = False
+
 
 
 class Vector(object):
