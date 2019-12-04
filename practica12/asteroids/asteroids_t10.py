@@ -1,13 +1,10 @@
 #!/usr/bin/env python
-
 import math
-
 import pygame
 from pygame.locals import *
-
 import random, time
 from datetime import datetime
-from multiprocessing import Process, Queue
+from multiprocessing import Process, Queue, Semaphore
 from threading import Thread
 
 class World(object):
@@ -240,19 +237,46 @@ def update_s():
     #print "entra"
     i = 0
     while world.running:
+        s.acquire()
         if i == 10 and len([x for x in world.sprites if isinstance(x, Asteroid)]) < 30:
             asteroid = Asteroid((random.randint(0, 800), random.randint(0,600)))
             world.sprites.add(asteroid)
             i = 0
         i += 1
-        colisions_AB()
-        colision_nau()
         world.update()
         world.render()
+        #colisions_AB()
+        #colision_nau()
         pygame.display.flip()
+        s.release()
         clock.tick(40)
     #print 'acaba'
     return 0
+
+
+def update_collision():
+    while world.running:
+        s.acquire()
+        colision_nau()
+        colisions_AB()
+        s.release()
+        clock.tick(40)
+
+def colisions_AB():
+    for i in [x for x in world.sprites if isinstance(x, Asteroid)]:
+        for j in [x for x in world.sprites if isinstance(x, Bullet)]:
+            if(abs(i.rect.center[0] - j.rect.center[0]) < 15 and abs(i.rect.center[1] - j.rect.center[1]) < 15):
+                i.kill()
+                j.kill()
+
+def colision_nau():
+    for i in [x for x in world.sprites if isinstance(x, Asteroid)]:
+        if(abs(i.rect.center[0] - player.rect.center[0]) < 15 and abs(i.rect.center[1] - player.rect.center[1]) < 15):
+            world.surface.fill(world.RED)
+            world.render()
+            pygame.display.flip()
+            world.running = False
+            time.sleep(5)
 
 # setup pygame
 pygame.init()
@@ -267,20 +291,8 @@ world.pew = pygame.mixer.Sound('assets/pew.wav')
 world.running = True
 # use the clock to throttle the fps to something reasonable
 clock = pygame.time.Clock()
+s = Semaphore(2)
 
-def colisions_AB():
-    for i in [x for x in world.sprites if isinstance(x, Asteroid)]:
-        for j in [x for x in world.sprites if isinstance(x, Bullet)]:
-            if(abs(i.rect.center[0] - j.rect.center[0]) < 15 and abs(i.rect.center[1] - j.rect.center[1]) < 15):
-                i.duration = 0
-                j.duration = 0
-
-def colision_nau():
-    for i in [x for x in world.sprites if isinstance(x, Asteroid)]:
-        if(abs(i.rect.center[0] - player.rect.center[0]) < 15 and abs(i.rect.center[1] - player.rect.center[1]) < 15):
-        #    world.render()
-        #    i.accel = 0
-        #    player.accel = 0
 
 def main():
     """ runs our application """
@@ -288,6 +300,8 @@ def main():
     # main loop
     supdate = Thread(target=update_s)
     supdate.start()
+    supdates = Thread(target=update_collision)
+    supdates.start()
     while world.running:
 
         events = pygame.event.get()
