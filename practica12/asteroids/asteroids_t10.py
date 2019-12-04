@@ -291,7 +291,7 @@ world.pew = pygame.mixer.Sound('assets/pew.wav')
 world.running = True
 # use the clock to throttle the fps to something reasonable
 clock = pygame.time.Clock()
-s = Semaphore(2)
+s = Semaphore(1)
 
 
 def main():
