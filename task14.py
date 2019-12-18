@@ -46,11 +46,14 @@ def inici():
 def fill(a,s):
     while True:
         x = b.recv()
-        y = b.recv()
-        if x == 'q' or y == 'q':
+        if x == 'q' :
             break
-        else:
-            substitueix(x,y,s)
+
+        y = b.recv()
+        if y == 'q':
+            break
+
+        substitueix(str(x),str(y),s)
 
 
 
@@ -60,21 +63,19 @@ if __name__ == '__main__' :
     p = Process(target=fill, args=(a,s))
     p.start()
     inici()
+
     while True:
-        time.sleep(1)
-        print("Quin nombre vols substituir?")
-        x = raw_input()
+        x = raw_input("Quin nombre vols substituir?")
         a.send(x)
 
-        if x=='q':
-            print("Sortir: x = q")
+        if x=='q' :
             break
 
-        print("Per quin nombre el vols substituir?")
-        y = raw_input()
+        y = raw_input("Per quin nombre el vols substituir?")
         a.send(y)
 
-        if y =='q':
-            print("Sortir: y = q")
+        if y =='q' :
             break
+
+        time.sleep(1)
     p.join()
