@@ -15,7 +15,7 @@ while True:
     s.sendall(data)
     t = s.recv(1024)
     print('Server-> mensaje renviado:',t)
-    if(data=='Bye'): 
+    if(data=='Bye'):
         data = s.recv(1024)
         print(data)
         break

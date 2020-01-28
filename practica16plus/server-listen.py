@@ -10,6 +10,7 @@ s.bind((HOST, PORT))
 s.listen(1)
 conn, addr = s.accept()
 conn.sendall('Conectat')
+
 while True:
     data = conn.recv(1024)
     print('Cliente -> mensaje enviado:',data)
