@@ -20,7 +20,7 @@ def rec(conn):
 
 def env(conn):
     while True:
-        t = raw_input("---Server---")
+        t = raw_input("Envia mensaje:")
         conn.sendall(t)
 
         if t == "Bye":

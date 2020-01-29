@@ -10,7 +10,7 @@ s.connect((HOST,PORT))
 
 def env(s):
     while True:
-        t = raw_input("---Cliente---")
+        t = raw_input("Envia mensaje:")
         s.sendall(t)
 
         if t == "Bye":
