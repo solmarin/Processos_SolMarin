@@ -6,7 +6,9 @@ from ChatFns import *
 #---------------------------------------------------#
 WindowTitle = 'JChat v0.1 - Client'
 HOST = 'localhost'
-PORT = 50010
+PORT = 50017
+#conexOne = True
+#nombre='Nom Usuari'
 s = socket(AF_INET, SOCK_STREAM)
 
 
@@ -15,19 +17,28 @@ s = socket(AF_INET, SOCK_STREAM)
 #---------------------------------------------------#
 #------------------ MOUSE EVENTS -------------------#
 #---------------------------------------------------#
+
 def ClickAction():
-    #Write message to chat window
-    EntryText = FilteredMessage(EntryBox.get("0.0",END))
-    LoadMyEntry(ChatLog, EntryText)
+        #Write message to chat window
+        EntryText = FilteredMessage(EntryBox.get("0.0",END))
+        LoadMyEntry(ChatLog, EntryText)
 
-    #Scroll to the bottom of chat windows
-    ChatLog.yview(END)
+        #Scroll to the bottom of chat windows
+        ChatLog.yview(END)
 
-    #Erace previous message in Entry Box
-    EntryBox.delete("0.0",END)
+        #Erace previous message in Entry Box
+        EntryBox.delete("0.0",END)
 
-    #Send my mesage to all others
-    s.sendall(EntryText)
+        #if conexOne == True:
+    #        nombre = EntryText
+    #       conexOne = False
+    #    else:
+        if (EntryText == 'Bye' or EntryText == 'Bye\n'):
+            s.sendall(EntryText)
+            base.destroy()
+        else:
+            #Send my mesage to all others
+            s.sendall(EntryText)
 
 #---------------------------------------------------#
 #----------------- KEYBOARD EVENTS -----------------#
@@ -79,10 +90,12 @@ SendButton.place(x=6, y=401, height=90)
 #----------------CONNECTION MANAGEMENT--------------#
 #---------------------------------------------------#
 
+
 def ReceiveData():
     try:
         s.connect((HOST, PORT))
         LoadConnectionInfo(ChatLog, '[ Succesfully connected ]\n---------------------------------------------------------------')
+        LoadConnectionInfo(ChatLog,'Introduix un nom: '+nombre)
     except:
         LoadConnectionInfo(ChatLog, '[ Unable to connect ]')
         return
