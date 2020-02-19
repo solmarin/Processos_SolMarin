@@ -1,18 +1,15 @@
+
 import thread
 from ChatFns import *
-
 #---------------------------------------------------#
 #---------INITIALIZE CONNECTION VARIABLES-----------#
 #---------------------------------------------------#
 WindowTitle = 'JChat v0.1 - Client'
 HOST = 'localhost'
-PORT = 50017
+PORT = 50019
 #conexOne = True
 #nombre='Nom Usuari'
 s = socket(AF_INET, SOCK_STREAM)
-
-
-
 
 #---------------------------------------------------#
 #------------------ MOUSE EVENTS -------------------#
@@ -94,8 +91,7 @@ SendButton.place(x=6, y=401, height=90)
 def ReceiveData():
     try:
         s.connect((HOST, PORT))
-        LoadConnectionInfo(ChatLog, '[ Succesfully connected ]\n---------------------------------------------------------------')
-        LoadConnectionInfo(ChatLog,'Introduix un nom: '+nombre)
+        LoadConnectionInfo(ChatLog, '[ Succesfully connected ]\n---------------------------------------------------------------\n Introdueix nom d\'usuari')
     except:
         LoadConnectionInfo(ChatLog, '[ Unable to connect ]')
         return
@@ -107,7 +103,8 @@ def ReceiveData():
             LoadConnectionInfo(ChatLog, '\n [ Your partner has disconnected ] \n')
             break
         if data != '':
-            LoadOtherEntry(ChatLog, data)
+            data = data.split(' ',1)
+            LoadOtherEntry(ChatLog,data[0],data[1])
             if base.focus_get() == None:
                 FlashMyWindow(WindowTitle)
                 playsound('notif.wav')
