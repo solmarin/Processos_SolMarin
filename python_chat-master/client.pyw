@@ -6,7 +6,7 @@ from ChatFns import *
 #---------------------------------------------------#
 WindowTitle = 'JChat v0.1 - Client'
 HOST = 'localhost'
-PORT = 50019
+PORT = 50022
 #conexOne = True
 #nombre='Nom Usuari'
 s = socket(AF_INET, SOCK_STREAM)
@@ -30,9 +30,11 @@ def ClickAction():
     #        nombre = EntryText
     #       conexOne = False
     #    else:
-        if (EntryText == 'Bye' or EntryText == 'Bye\n'):
+        if (EntryText == 'Bye' or EntryText == 'Bye\n' or EntryText == ''):
             s.sendall(EntryText)
+            s.close()
             base.destroy()
+
         else:
             #Send my mesage to all others
             s.sendall(EntryText)
@@ -108,7 +110,6 @@ def ReceiveData():
             if base.focus_get() == None:
                 FlashMyWindow(WindowTitle)
                 playsound('notif.wav')
-
         else:
             LoadConnectionInfo(ChatLog, '\n [ Your partner has disconnected ] \n')
             break
