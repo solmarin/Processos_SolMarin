@@ -37,7 +37,7 @@ def sendEmail(addr):
     sender_email = "solmarinesteban@gmail.com" # sending address
     receiver_email = "solmarinesteban@gmail.com"  # receiver address
     password = "amanecer99"   # password
-    message = "Subject: Hi"+ "\n\n\nThe address " + str(addr) + """ has visited the image.""" # Email content data
+    message = "Subject: SERVIDOR"+ "\n\n\nThe address " + str(addr) + " AN VISTO LA IMAGEN." # Email content data
 
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL(smtp_server, port) as server:
